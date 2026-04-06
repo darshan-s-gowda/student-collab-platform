@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');   // ✅ ADD THIS LINE
 
 const connectDB = require('./config/db');
 
@@ -7,12 +8,16 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+// ✅ CORS setup
 app.use(cors({
   origin: "https://student-collab-platform-nine.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
 app.options('*', cors());
+
 app.use(express.json());
 
 // Routes
