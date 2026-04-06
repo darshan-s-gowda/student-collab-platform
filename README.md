@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 StudentCollab Platform
 
 A full-stack web platform where engineering students from different colleges connect and collaborate on projects.
@@ -180,3 +181,6 @@ npm start
 - AI teammate matching
 - Blockchain project ownership verification
 - Student reputation/badge system
+=======
+# student-collab-platform
+>>>>>>> c5c804a5834b2e045b8bde2ec55aa7fad9da6686
