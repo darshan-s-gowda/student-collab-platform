@@ -39,12 +39,14 @@ const ProjectDetailsPage = () => {
       setLoading(false);
     };
     init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {
     if (project && user && project.owner_id?._id === user._id) {
       fetchRequests();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project, user]);
 
   const handleDelete = async () => {

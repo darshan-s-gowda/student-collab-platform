@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getMyRequests, getProfile, getProjectRequests } from '../services/api';
-import { useAuth } from '../context/AuthContext';
 import RequestCard from '../components/RequestCard';
 
 const TAB_MY = 'my';
 const TAB_INCOMING = 'incoming';
 
 const RequestsPage = () => {
-  const { user } = useAuth();
   const [tab, setTab] = useState(TAB_MY);
   const [myRequests, setMyRequests] = useState([]);
   const [allIncoming, setAllIncoming] = useState([]);
@@ -51,6 +49,7 @@ const RequestsPage = () => {
       setLoading(false);
     };
     init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleProjectChange = async (projectId) => {

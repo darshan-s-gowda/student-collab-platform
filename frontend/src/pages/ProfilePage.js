@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getProfile, updateProfile, getGitHubRepos } from '../services/api';
 import SkillTag from '../components/SkillTag';
@@ -7,7 +7,7 @@ import ProjectCard from '../components/ProjectCard';
 const BRANCHES = ['Computer Science','Information Technology','Electronics','Electrical','Mechanical','Civil','Chemical','Aerospace','Biomedical','Data Science','AI/ML','Other'];
 
 const ProfilePage = () => {
-  const { user, updateUser } = useAuth();
+  const { updateUser } = useAuth();
   const [profile, setProfile] = useState(null);
   const [repos, setRepos] = useState([]);
   const [reposLoading, setReposLoading] = useState(false);
@@ -23,7 +23,7 @@ const ProfilePage = () => {
     github_profile: '', bio: '', gender: 'prefer_not_to_say', skills: []
   });
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     try {
       const { data } = await getProfile();
       setProfile(data);
@@ -40,7 +40,7 @@ const ProfilePage = () => {
       if (data.github_profile) fetchRepos(data.github_profile);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
-  };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchRepos = async (username) => {
     if (!username) return;
@@ -52,7 +52,7 @@ const ProfilePage = () => {
     finally { setReposLoading(false); }
   };
 
-  useEffect(() => { fetchProfile(); }, []);
+  useEffect(() => { fetchProfile(); }, [fetchProfile]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 

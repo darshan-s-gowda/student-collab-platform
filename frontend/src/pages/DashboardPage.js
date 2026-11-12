@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectCard from '../components/ProjectCard';
-import { getProfile, getMyRequests, sendRequest } from '../services/api';
+import { getProfile, getMyRequests } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import Modal from '../components/Modal';
 
 const StatCard = ({ icon, value, label, color }) => (
   <div style={{ background: 'linear-gradient(145deg, #0f172a, #1e293b)', border: `1px solid ${color}22`, borderRadius: '16px', padding: '20px 24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -20,10 +19,6 @@ const DashboardPage = () => {
   const [profile, setProfile] = useState(null);
   const [myRequests, setMyRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [message, setMessage] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,18 +31,6 @@ const DashboardPage = () => {
     };
     fetchData();
   }, []);
-
-  const showToast = (msg, type = 'success') => { setToast({ msg, type }); setTimeout(() => setToast(null), 3000); };
-
-  const handleSendRequest = async () => {
-    setSubmitting(true);
-    try {
-      await sendRequest({ project_id: selectedProject._id, message });
-      setSelectedProject(null);
-      showToast('Request sent!');
-    } catch (err) { showToast(err.response?.data?.message || 'Failed', 'error'); }
-    finally { setSubmitting(false); }
-  };
 
   const pendingRequests = myRequests.filter(r => r.status === 'pending');
   const acceptedRequests = myRequests.filter(r => r.status === 'accepted');
@@ -133,12 +116,6 @@ const DashboardPage = () => {
           </div>
         )}
       </div>
-
-      {toast && (
-        <div style={{ position: 'fixed', bottom: '24px', right: '24px', background: toast.type === 'error' ? 'rgba(239,68,68,0.95)' : 'rgba(16,185,129,0.95)', color: 'white', padding: '12px 20px', borderRadius: '12px', fontWeight: 600, fontSize: '0.875rem', zIndex: 9999, boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}>
-          {toast.msg}
-        </div>
-      )}
     </div>
   );
 };

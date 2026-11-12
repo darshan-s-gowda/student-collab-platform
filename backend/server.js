@@ -10,8 +10,19 @@ connectDB();
 const app = express();
 
 // ✅ CORS setup
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://student-collab-platform-nine.vercel.app",
+  process.env.CLIENT_URL
+].filter(Boolean);
 app.use(cors({
-  origin: "https://student-collab-platform-nine.vercel.app",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
